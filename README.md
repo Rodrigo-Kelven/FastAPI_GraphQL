@@ -7,7 +7,7 @@ Este projeto é uma API GraphQL simples construída com FastAPI e Strawberry. A 
 
 GraphQL é uma linguagem de consulta para APIs que permite que os clientes solicitem exatamente os dados de que precisam. Ao contrário do REST, onde você tem várias rotas para diferentes recursos, no GraphQL você tem uma única rota que pode retornar diferentes tipos de dados.
 
-### Versão: 0.0.2
+### Versão: 0.0.5
 
 #### Para mais informações sobre: 
 * https://www.redhat.com/pt-br/topics/api/what-is-graphql
