@@ -1,9 +1,10 @@
 import strawberry
 from fastapi import FastAPI, HTTPException
 from strawberry.fastapi import GraphQLRouter
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+import uuid
 
 # Configuração do banco de dados
 DATABASE_URL = "sqlite:///./test.db"
@@ -15,7 +16,7 @@ Base = declarative_base()
 class ItemModel(Base):
     __tablename__ = "items"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(String, primary_key=True, index=True)
     name = Column(String, index=True)
     description = Column(String)
 
@@ -25,7 +26,7 @@ Base.metadata.create_all(bind=engine)
 # Definindo o tipo GraphQL
 @strawberry.type
 class Item:
-    id: int
+    id: str
     name: str
     description: str
 
@@ -59,7 +60,11 @@ def read_root():
 @app.post("/items/")
 def create_item(name: str, description: str):
     db: Session = SessionLocal()
-    new_item = ItemModel(name=name, description=description)
+
+    # passando o id como UUID
+    item_id = str(uuid.uuid4())
+
+    new_item = ItemModel(id=item_id,  name=name, description=description)
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
