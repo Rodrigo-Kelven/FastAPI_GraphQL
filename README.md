@@ -49,10 +49,12 @@ Antes de começar, você precisa ter o Python 3.7 ou superior instalado em sua m
 
 ```bash
 {
-  allItems {
+  allUsers {
     id
-    name
-    description
+    username
+    email
+    password
+    
   }
 }
 ```
