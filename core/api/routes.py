@@ -1,19 +1,18 @@
-from core.config.config import Base, engine, SessionLocal, Session
+from core.config.config import SessionLocal, Session
 from strawberry.fastapi import GraphQLRouter
 from fastapi import APIRouter, HTTPException
-from core.schemas.schemas import Query
-from core.model.model import ItemModel
+from core.schemas.schemas import UserBase, Query_User
+from core.model.model import User
 import strawberry
 import uuid
 
-routes = APIRouter(prefix="/api/v1")
 
-# Criando as tabelas no banco de dados
-Base.metadata.create_all(bind=engine)
+
+routes = APIRouter(prefix="/api/v1")
 
 
 # Criando o esquema GraphQL
-schema = strawberry.Schema(query=Query)
+schema = strawberry.Schema(query=Query_User)
 
 
 # Adicionando a rota GraphQL
@@ -27,14 +26,21 @@ def read_root():
 
 
 # Rota para adicionar um item
-@routes.post("/items/")
-def create_item(name: str, description: str):
+@routes.post("/cadastro_user/")
+def create_item(user: UserBase):
     db: Session = SessionLocal()
 
     # passando o id como UUID
     item_id = str(uuid.uuid4())
 
-    new_item = ItemModel(id=item_id,  name=name, description=description)
+    # criando item no banco
+    new_item = User(
+        id=item_id, 
+        username=user.username,
+        email=user.email,
+        password=user.password
+        )
+    
     db.add(new_item)
     db.commit()
     db.refresh(new_item)
