@@ -1,8 +1,8 @@
-from config.config import Base, engine, SessionLocal, Session
+from core.config.config import Base, engine, SessionLocal, Session
 from strawberry.fastapi import GraphQLRouter
 from fastapi import APIRouter, HTTPException
-from schemas.schemas import Query
-from model.model import ItemModel
+from core.schemas.schemas import Query
+from core.model.model import ItemModel
 import strawberry
 import uuid
 

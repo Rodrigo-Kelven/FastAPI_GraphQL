@@ -1,6 +1,6 @@
 import strawberry
-from config.config import Session, SessionLocal
-from model.model import ItemModel
+from core.config.config import Session, SessionLocal
+from core.model.model import ItemModel
 
 
 # Definindo o tipo GraphQL

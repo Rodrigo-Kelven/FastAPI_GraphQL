@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, Column, String
-from config.config import Base
+from core.config.config import Base
 
 
 # Definindo o modelo de dados
