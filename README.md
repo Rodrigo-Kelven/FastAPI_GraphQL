@@ -53,7 +53,6 @@ Antes de começar, você precisa ter o Python 3.7 ou superior instalado em sua m
     id
     username
     email
-    password
     
   }
 }
@@ -65,16 +64,16 @@ Antes de começar, você precisa ter o Python 3.7 ou superior instalado em sua m
 ```bash
 {
   "data": {
-    "allItems": [
+    "allUsers": [
       {
-        "id": 1,
-        "name": "Item 1",
-        "description": "Descrição do Item 1"
+        "id": "a066345d-e809-4277-97a8-0506e679e380",
+        "username": "string",
+        "email": "user@example.com"
       },
       {
-        "id": 2,
-        "name": "Item 2",
-        "description": "Descrição do Item 2"
+        "id": "d648e05e-ca08-4bde-83e8-c8f559e54533",
+        "username": "string_dois",
+        "email": "user_seila@example.com"
       }
     ]
   }
