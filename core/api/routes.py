@@ -1,13 +1,14 @@
-from core.config.config import SessionLocal, Session
+from core.schemas.schemas import UserCreate, UserResponse
+from core.schemas.schemas_graphql import Query_User
 from strawberry.fastapi import GraphQLRouter
-from fastapi import APIRouter, HTTPException
-from core.schemas.schemas import UserBase, Query_User
-from core.model.model import User
+from fastapi import APIRouter
 import strawberry
-import uuid
 
 
+from core.services.service import UserService
 
+
+# definindo prefixo da api
 routes = APIRouter(prefix="/api/v1")
 
 
@@ -27,22 +28,12 @@ def read_root():
 
 # Rota para adicionar um item
 @routes.post("/cadastro_user/")
-def create_item(user: UserBase):
-    db: Session = SessionLocal()
+def create_item(payload: UserCreate):
 
-    # passando o id como UUID
-    item_id = str(uuid.uuid4())
+    user = UserService.create_user(payload)
+    return UserService.response_create_user(user)
 
-    # criando item no banco
-    new_item = User(
-        id=item_id, 
-        username=user.username,
-        email=user.email,
-        password=user.password
-        )
-    
-    db.add(new_item)
-    db.commit()
-    db.refresh(new_item)
-    db.close()
-    return new_item
+
+@routes.delete("/delete_user/{id_user}")
+def delete_user(id_user: str):
+    return UserService.delete_user(id_user)
