@@ -6,6 +6,7 @@ from core.model.model import User
 import uuid
 
 class UserService:
+    # implementar todas as operacoes realizadas pelo usuario nesta  classe
 
     @staticmethod
     def check_email_exists(email: str, db):
