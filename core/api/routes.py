@@ -1,4 +1,4 @@
-from core.schemas.schemas import UserCreate, UserResponse
+from core.schemas.schemas import UserCreate, UserResponse, UserBase
 from core.schemas.schemas_graphql import Query_User
 from strawberry.fastapi import GraphQLRouter
 from fastapi import APIRouter
@@ -9,7 +9,7 @@ from core.services.service import UserService
 
 
 # definindo prefixo da api
-routes = APIRouter(prefix="/api/v1")
+router = APIRouter(prefix="/api/v1")
 
 
 # Criando o esquema GraphQL
@@ -17,23 +17,39 @@ schema = strawberry.Schema(query=Query_User)
 
 
 # Adicionando a rota GraphQL
-routes.include_router(GraphQLRouter(schema), prefix="/graphql")
+router.include_router(GraphQLRouter(schema), prefix="/graphql")
 
 
 # Rota de saúde
-@routes.get("/")
+@router.get("/")
 def read_root():
     return {"message": "API GraphQL em FastAPI com SQLAlchemy"}
 
 
 # Rota para adicionar um item
-@routes.post("/cadastro_user/")
+@router.post("/cadastro_user/", response_model=UserResponse)
 def create_item(payload: UserCreate):
 
-    user = UserService.create_user(payload)
-    return UserService.response_create_user(user)
+    return UserService.create_user(payload)
+    #return UserService.response_create_user(user)
 
 
-@routes.delete("/delete_user/{id_user}")
+@router.delete("/delete_user/{id_user}")
 def delete_user(id_user: str):
     return UserService.delete_user(id_user)
+
+
+@router.get("/get_all_users", response_model=list[UserResponse])
+def get_all_users():
+    return UserService.get_all_users()
+
+
+@router.put("/update_user{user_id}", response_model=UserResponse)
+def update_user(payload: UserBase, user_id: str):
+    return UserService.update_user(payload, user_id)
+
+
+@router.delete("/delete_all_users")
+def delete_all_users():
+    UserService.delete_all_users()
+    return {"message": "All users deleted successfully."}
