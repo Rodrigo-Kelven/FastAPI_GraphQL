@@ -1,12 +1,13 @@
-from sqlalchemy import select
-from core.config.config import SessionLocal
 from core.schemas.schemas import UserResponse, UserCreate
+from core.config.config import SessionLocal
 from fastapi import HTTPException, status
 from core.model.model import User
+from sqlalchemy import select
 import uuid
 
+
+# implementar todas as operacoes realizadas pelo usuario nesta  classe
 class UserService:
-    # implementar todas as operacoes realizadas pelo usuario nesta  classe
 
     # veirifca se ja existe usuario com email ja cadastrado na Tabela User
     @staticmethod
@@ -31,7 +32,7 @@ class UserService:
     # Criar o usuário na tabela User
     @staticmethod 
     def create_user(payload: UserCreate):
-        
+        # varival responsavel por pegar a sessao com o banco de dados
         db = SessionLocal()
         
         # Verifica se o email já existe
@@ -39,11 +40,11 @@ class UserService:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email já está em uso.")
 
         # Passando o id como UUID
-        item_id = str(uuid.uuid4())
+        user_id = str(uuid.uuid4())
 
         # Criando item no banco
         new_user = User(
-            id=item_id, 
+            id=user_id, 
             username=payload.username,
             email=payload.email,
             password=payload.password
@@ -63,10 +64,11 @@ class UserService:
         finally:
             db.close()
 
+
     # deleta usuario 'com id_user' do banco User
     @staticmethod
     def delete_user(id_user: str):
-
+        # varival responsavel por pegar a sessao com o banco de dados
         db = SessionLocal()
         
         try:
@@ -90,6 +92,7 @@ class UserService:
     # pega todos os usuarios do banco User
     @staticmethod
     def get_all_users():
+        # varival responsavel por pegar a sessao com o banco de dados
         db = SessionLocal()
 
         users = db.query(User).all()
@@ -100,7 +103,7 @@ class UserService:
 
     @staticmethod
     def update_user(payload: UserCreate, user_id: str):
-
+        # varival responsavel por pegar a sessao com o banco de dados
         db = SessionLocal()
 
         # verifica se o usuario existe
@@ -110,7 +113,11 @@ class UserService:
             db.close()
             raise HTTPException(status_code=404, detail="User  not found")
 
-        
+        """
+        Quando se faz um PUT, nao precisa passar o modelo da tabela do DB
+        Porque a variavel user é declarada, ela ja recebe todo o modelo
+        Assim so precisa passar os dados novos e realizar o "update"
+        """
         user.username = payload.username
         user.email = payload.email
 
@@ -120,7 +127,6 @@ class UserService:
         # nao esqueca de retornar, senao retornar o valor aqui, como ira aparecer no response_model ??
         return user
     
-
 
     @staticmethod
     def delete_all_users():
