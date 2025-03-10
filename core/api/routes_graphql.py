@@ -1,4 +1,3 @@
-from core.schemas.schemas import UserCreate, UserResponse, UserBase
 from core.schemas.schemas_graphql import Query_User
 from strawberry.fastapi import GraphQLRouter
 from fastapi import APIRouter

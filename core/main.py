@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from core.config.config import Base, engine
+from core.db.config import Base, engine
 
 from core.api.routes import router
 from core.api.all_routes import routes

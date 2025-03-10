@@ -1,4 +1,4 @@
-from core.config.config import Session, SessionLocal
+from core.db.config import Session, SessionLocal
 from core.model.model import User
 from pydantic import BaseModel
 from datetime import datetime
@@ -11,8 +11,11 @@ import strawberry
 class Userlist(BaseModel):
     id: str
     username: str
+    full_name: str
     email: str
-    password: str
+    hashed_password: str
+    disabled: bool
+    role: str
     created_at: datetime
     verified: int
 

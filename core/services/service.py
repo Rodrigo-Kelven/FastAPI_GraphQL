@@ -1,9 +1,14 @@
 from core.schemas.schemas import UserResponse, UserCreate
-from core.config.config import SessionLocal
-from fastapi import HTTPException, status
-from core.model.model import User
+from core.db.config import SessionLocal, get_db_users
+from fastapi import Depends, HTTPException, status
+from core.model.model import User, Role
 from sqlalchemy import select
 import uuid
+
+from typing import List, Annotated
+
+
+from core.auth.auth import get_password_hash, get_current_active_user, get_user, check_permissions
 
 
 # implementar todas as operacoes realizadas pelo usuario nesta  classe
@@ -16,7 +21,24 @@ class UserService:
         existing_user = db.execute(select(User).where(User.email == email)).scalar()
         return existing_user
     
+
+    # veirifca se ja existe usuario com username ja cadastrado na Tabela User
+    @staticmethod
+    def check_username_exists(username: str, db):
+        # Verifica se o email já existe no banco de dados
+        existing_user = db.execute(select(User).where(User.username == username)).scalar()
+        return existing_user
     
+
+    # veirifca se ja existe usuario com full_name ja cadastrado na Tabela User
+    @staticmethod
+    def check_full_name_exists(full_name: str, db):
+        # Verifica se o email já existe no banco de dados
+        existing_user = db.execute(select(User).where(User.full_name == full_name)).scalar()
+        return existing_user
+    
+    
+    # sem Uso
     @staticmethod
     def response_create_user(user: User) -> UserResponse:
         # Resposta ao criar usuário, caso nao use o response model
@@ -38,16 +60,24 @@ class UserService:
         # Verifica se o email já existe
         if UserService.check_email_exists(payload.email, db):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email já está em uso.")
+        
+        if UserService.check_username_exists(payload.username, db):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Este usuario já existe!")
+        
+        if UserService.check_full_name_exists(payload.full_name, db):
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Full Name ja registrado!")
 
         # Passando o id como UUID
         user_id = str(uuid.uuid4())
 
         # Criando item no banco
+        hash_password = get_password_hash(payload.password)
         new_user = User(
             id=user_id, 
             username=payload.username,
+            full_name=payload.full_name,
             email=payload.email,
-            password=payload.password
+            hashed_password=hash_password
         )
 
         try:
@@ -64,22 +94,22 @@ class UserService:
         finally:
             db.close()
 
+    
 
     # deleta usuario 'com id_user' do banco User
     @staticmethod
-    def delete_user(id_user: str):
+    def delete_user(current_user: Annotated[User , Depends(get_current_active_user)]):
         # varival responsavel por pegar a sessao com o banco de dados
         db = SessionLocal()
+        db_user = get_user(db, current_user.username)  # Obtém o usuário autenticado
+
+        if not db_user:
+            db.close()
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario nao encontrado!")
         
         try:
-            # Verifica se o usuário existe
-            user = db.execute(select(User).where(User.id == id_user)).scalar()
-            if not user:
-                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado.")
-
-
             # Exclui o usuário
-            db.delete(user)
+            db.delete(db_user)
             db.commit()
             return {"detail": "Usuário excluído com sucesso."}
         except Exception as e:
@@ -87,6 +117,9 @@ class UserService:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
         finally:
             db.close()
+
+
+        
 
     
     # pega todos os usuarios do banco User
@@ -102,35 +135,39 @@ class UserService:
     
 
     @staticmethod
-    def update_user(payload: UserCreate, user_id: str):
+    def update_user(payload: UserCreate, current_user):
         # varival responsavel por pegar a sessao com o banco de dados
         db = SessionLocal()
+        db_user = get_user(db, current_user.username)  # Obtém o usuário autenticado
 
-        # verifica se o usuario existe
-        user = db.query(User).filter(User.id == user_id).first()
-
-        if not user:
+        if not db_user:
             db.close()
-            raise HTTPException(status_code=404, detail="User  not found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario nao encontrado!")
+        
+
 
         """
         Quando se faz um PUT, nao precisa passar o modelo da tabela do DB
         Porque a variavel user é declarada, ela ja recebe todo o modelo
         Assim so precisa passar os dados novos e realizar o "update"
         """
-        user.username = payload.username
-        user.email = payload.email
+        db_user.username = payload.username
+        db_user.email = payload.email
 
         db.commit()
-        db.refresh(user)
+        db.refresh(db_user)
         db.close()
         # nao esqueca de retornar, senao retornar o valor aqui, como ira aparecer no response_model ??
-        return user
+        return db_user
     
 
     @staticmethod
-    def delete_all_users():
+    def delete_all_users(current_user):
         db = SessionLocal()
+
+        check_permissions(current_user, Role.admin)
+        
+
         try:
             db.query(User).delete()  # Deleta todos os usuários
             db.commit()  # Confirma a transação
