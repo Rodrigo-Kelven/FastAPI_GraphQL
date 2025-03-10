@@ -70,14 +70,15 @@ Antes de começar, você precisa ter o Python 3.7 ou superior instalado em sua m
   "data": {
     "allUsers": [
       {
-        "id": "a066345d-e809-4277-97a8-0506e679e380",
+        "id": "61476a49-6f68-4ba0-998f-07196de68abe",
         "username": "string",
-        "email": "user@example.com"
-      },
-      {
-        "id": "d648e05e-ca08-4bde-83e8-c8f559e54533",
-        "username": "string_dois",
-        "email": "user_seila@example.com"
+        "fullName": "string",
+        "email": "user@example.com",
+        "role": "Role.admin",
+        "hashedPassword": "$2b$12$SjQvK5W9nE5UW9PnDsMRxOXqaKVG8.GRqtVIL/5ZeiAV33c5SV2M.",
+        "disabled": false,
+        "verified": 0,
+        "createdAt": "2025-03-10T02:22:27"
       }
     ]
   }
