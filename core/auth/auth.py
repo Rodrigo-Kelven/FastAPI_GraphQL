@@ -10,7 +10,6 @@ from core.model.model import User, Role
 from sqlalchemy.orm import Session
 from typing import  Annotated
 from jose import JWTError
-import logging
 import jwt
 
 
@@ -97,15 +96,6 @@ def check_permissions(user: User, required_role: Role):
     if user.role != required_role and user.role != Role.admin:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions")
 
-
-
-# Configurar o log
-# Configurar o registro
-logging.basicConfig(level=logging.INFO,
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    handlers=[logging.StreamHandler()])
-
-logger = logging.getLogger(__name__)
 
 
 class LogRequestMiddleware(BaseHTTPMiddleware):

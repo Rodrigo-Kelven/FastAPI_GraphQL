@@ -5,7 +5,10 @@ from core.db.config import SessionLocal, get_db_users
 from core.services.service import UserService
 from core.model.model import User, Role
 from typing import Annotated
-from core.auth.auth import *
+from core.auth.auth import (
+    authenticate_user, timedelta, ACCESS_TOKEN_EXPIRE_MINUTES,
+    create_access_token, get_current_active_user, check_permissions
+)
 
 # definindo prefixo da api
 router = APIRouter(prefix="/api/v1", tags=["Api Rest"])
