@@ -36,7 +36,7 @@ def get_users() -> list[Userlist]:
             role=user.role,
             created_at=user.created_at,
             verified=user.verified
-        ) for user in users]
+        ) for user in users] # nao deve puxar o password! somente para fins de estudos 
     finally:
         db.close()
 
