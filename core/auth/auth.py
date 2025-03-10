@@ -10,6 +10,7 @@ from core.model.model import User, Role
 from sqlalchemy.orm import Session
 from typing import  Annotated
 from jose import JWTError
+import logging
 import jwt
 
 
