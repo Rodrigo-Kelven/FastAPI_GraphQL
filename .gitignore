@@ -9,6 +9,7 @@ Thumbs.db
 # Ignorar arquivos de ambiente virtual
 venv/
 env/
+venve/
 
 # Ignorar arquivos de log
 *.log
