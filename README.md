@@ -51,8 +51,13 @@ Antes de começar, você precisa ter o Python 3.7 ou superior instalado em sua m
   allUsers {
     id
     username
+    fullName
     email
-    
+    role
+    hashedPassword
+    disabled
+    verified
+    createdAt    
   }
 }
 ```
