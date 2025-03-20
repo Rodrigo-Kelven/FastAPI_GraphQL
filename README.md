@@ -10,7 +10,7 @@
 ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white) 
 
 
- Este projeto é uma API GraphQL simples construída com FastAPI e Strawberry, duas ferramentas poderosas do ecossistema Python. A API permite que os usuários consultem uma lista de itens, cada um contendo um ID, nome e descrição.
+ Este projeto é uma API GraphQL simples construída com FastAPI e Strawberry, duas ferramentas poderosas do ecossistema Python. A API permite que os usuários consultem uma lista de itens, cada um contendo um ID, username, fullName, email, role, hashedPassword, disabled, verified, createdAt.
 
 ## Sobre GraphQL
  O GraphQL é uma linguagem de consulta para APIs que oferece flexibilidade ao cliente, permitindo solicitar exatamente os dados necessários. Diferentemente do REST, onde múltiplas rotas são usadas para diferentes recursos, o GraphQL utiliza uma única rota que pode retornar diversos tipos de dados, otimizando a comunicação entre cliente e servidor.
