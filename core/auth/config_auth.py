@@ -42,4 +42,4 @@ def cors(app):
     allow_headers=["Content-Type", "Authorization"],
     expose_headers=["X-Custom-Header"],
     max_age=3600,
-)
+    )
