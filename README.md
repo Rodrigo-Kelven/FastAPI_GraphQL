@@ -26,7 +26,7 @@ Strawberry é uma biblioteca de GraphQL para Python que utiliza anotações de t
   - Escalabilidade: A estrutura GraphQL facilita a adição de novos tipos de dados sem alterar a lógica existente.
 
 
-### Versão: 1.2.10
+### Versão: 1.2.11
 
 #### Para mais informações sobre: 
 * https://www.redhat.com/pt-br/topics/api/what-is-graphql
@@ -52,7 +52,7 @@ Antes de começar, você precisa ter o Python 3.7 ou superior instalado em sua m
 
 ### Usando a API
 
-#### A API GraphQL pode ser acessada em http://127.0.0.1:8000/graphql. Você pode usar a interface GraphQL para fazer consultas.
+#### A API GraphQL pode ser acessada em http://127.0.0.1:8000/api/v1/graphql. Você pode usar a interface GraphQL para fazer consultas.
 
 ## Exemplo de Consulta
 
