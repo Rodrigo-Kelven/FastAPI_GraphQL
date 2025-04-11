@@ -1,6 +1,6 @@
 from fastapi.middleware.cors import CORSMiddleware
 
-# caso precise de mais configuracao, documente e especifique porque
+
 def config_CORS(app):
     
 
@@ -20,3 +20,9 @@ def config_CORS(app):
         expose_headers=["X-Custom-Header"],
         max_age=3600,
     )
+"""
+Ao permitir todas as origens (allow_origins=["*"]), você deve ter cuidado,
+pois isso pode expor sua API a riscos de segurança.
+É sempre melhor restringir as origens permitidas ao mínimo necessário
+"""
+

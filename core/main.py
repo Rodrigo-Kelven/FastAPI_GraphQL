@@ -5,6 +5,7 @@ from core.config.config_all import config_CORS
 from core.api.routes import router
 from core.api.all_routes import routes
 
+
 # Criando as tabelas no banco de dados
 Base.metadata.create_all(bind=engine)
 print("Banco de dados criado com sucesso!")
@@ -12,8 +13,13 @@ print("Banco de dados criado com sucesso!")
 # Criando a aplicação FastAPI
 app = FastAPI()
 
+# CORS
 config_CORS(app)
+
+# all routes
 routes(app)
+
+
 
 
 """
