@@ -50,6 +50,12 @@ Antes de começar, você precisa ter o Python 3.7 ou superior instalado em sua m
   pip install -r requirements.txt
 ```
 
+## Usando via docker
+```bash
+  docker build -t api_graphql .
+  docker run -p 8000:8000 api_graphql
+```
+
 ### Usando a API
 
 #### A API GraphQL pode ser acessada em http://127.0.0.1:8000/api/v1/graphql. Você pode usar a interface GraphQL para fazer consultas.
