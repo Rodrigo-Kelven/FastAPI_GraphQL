@@ -1,6 +1,7 @@
 # Ignorar arquivos de cache do Python
 __pycache__/
 *.pyc
+.db
 
 # Ignorar arquivos de configuração do sistema
 .DS_Store
