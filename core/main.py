@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from core.db.config import Base, engine
+from core.config.config_all import config_CORS
 
 from core.api.routes import router
 from core.api.all_routes import routes
@@ -11,6 +12,7 @@ print("Banco de dados criado com sucesso!")
 # Criando a aplicação FastAPI
 app = FastAPI()
 
+config_CORS(app)
 routes(app)
 
 
