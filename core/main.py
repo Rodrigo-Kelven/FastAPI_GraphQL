@@ -20,8 +20,6 @@ config_CORS(app)
 routes(app)
 
 
-
-
 """
 Organizar todas as rotas e adicionar descricao
 Melhorar CRUD
